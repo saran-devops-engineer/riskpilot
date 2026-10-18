@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="Stock entry, stop-loss and target calculator with a fixed ₹1,000 risk per trade and 1:2 risk-to-reward.">
+  <title>RiskPilot — Stock Risk &amp; Target Calculator</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">₹</span>
+      <div>
+        <h1>RiskPilot</h1>
+        <p class="tagline">Fixed ₹1,000 risk &middot; 1:2 reward</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <section class="card inputs-card" aria-labelledby="inputs-title">
+      <h2 id="inputs-title" class="card-title">Trade Inputs</h2>
+      <form id="calc-form" novalidate>
+        <div class="field">
+          <label for="stock">Stock Name / Symbol</label>
+          <input id="stock" name="stock" type="text" inputmode="text" autocomplete="off"
+                 placeholder="e.g. RELIANCE" aria-describedby="input-error">
+        </div>
+        <div class="field">
+          <label for="entry">Entry Price (₹)</label>
+          <input id="entry" name="entry" type="text" inputmode="decimal" autocomplete="off"
+                 placeholder="e.g. 100" aria-describedby="input-error">
+        </div>
+        <div class="field">
+          <label for="stoploss">Stop-Loss Price (₹)</label>
+          <input id="stoploss" name="stoploss" type="text" inputmode="decimal" autocomplete="off"
+                 placeholder="e.g. 80" aria-describedby="input-error">
+        </div>
+      </form>
+      <p id="input-error" class="input-error" role="alert" hidden></p>
+      <button id="reset-btn" type="button" class="btn-reset">Reset</button>
+    </section>
+
+    <section class="results" id="results" aria-live="polite">
+      <div class="results-header">
+        <h2 class="results-title" id="results-title">Trade Summary</h2>
+        <button id="share-btn" type="button" class="btn-share" title="Share results">Share</button>
+      </div>
+      <div class="highlight-grid">
+        <div class="highlight highlight--qty">
+          <span class="highlight-label">Quantity to Buy</span>
+          <span class="highlight-value" id="out-qty">—</span>
+          <span class="highlight-sub" id="out-qty-sub">shares</span>
+        </div>
+        <div class="highlight highlight--target">
+          <span class="highlight-label">Target Price</span>
+          <span class="highlight-value" id="out-target">—</span>
+          <span class="highlight-sub" id="out-target-sub">1:2 reward</span>
+        </div>
+      </div>
+
+      <p id="zero-qty-msg" class="notice" hidden>
+        Stop-loss distance is too large for the ₹1,000 risk limit — even one share would risk
+        more than allowed. Tighten the stop-loss to increase quantity.
+      </p>
+
+      <div class="metric-groups">
+        <div class="metric-group metric-group--risk">
+          <h3 class="group-title">Risk</h3>
+          <dl class="metrics">
+            <div class="metric"><dt>Entry Price</dt><dd id="out-entry">—</dd></div>
+            <div class="metric"><dt>Stop-Loss Price</dt><dd id="out-sl">—</dd></div>
+            <div class="metric"><dt>Risk per Share</dt><dd id="out-risk">—</dd></div>
+            <div class="metric"><dt>Maximum Trade Risk</dt><dd id="out-maxrisk">₹1,000</dd></div>
+            <div class="metric"><dt>Total Planned Risk</dt><dd id="out-totalrisk">—</dd></div>
+            <div class="metric"><dt>Capital Required</dt><dd id="out-capital">—</dd></div>
+          </dl>
+        </div>
+
+        <div class="metric-group metric-group--profit">
+          <h3 class="group-title">Reward</h3>
+          <dl class="metrics">
+            <div class="metric"><dt>Target Points (1:2)</dt><dd id="out-points">—</dd></div>
+            <div class="metric"><dt>Target Price</dt><dd id="out-target2">—</dd></div>
+            <div class="metric"><dt>Potential Profit</dt><dd id="out-profit">—</dd></div>
+            <div class="metric"><dt>Risk-to-Reward Ratio</dt><dd id="out-ratio">—</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>Calculation tool only — not a trading recommendation. Figures exclude brokerage, taxes,
+    slippage and other trading costs. All calculations run locally in your browser.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
